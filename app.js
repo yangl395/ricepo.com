@@ -20,36 +20,39 @@ app.engine('html', require('ejs').renderFile);
 
 app.use('/static',express.static(__dirname + '/public'));
 
-app.use('/',function(req,res){
+//android wechat
+app.use(function(req, res, next){
 	var agent = req.header('User-Agent').toLowerCase();
-	if(mobile(agent)){
+	if(agent.indexOf('android') > -1 && agent.indexOf('micromessenger') > -1){
 		res.render('mobile.html');
 	}
 	else{
-		res.render('mobile.html');
+		next();
 	}
+});
+
+//mobile download
+app.all('/d', function(req, res){
+	var agent = req.header('User-Agent').toLowerCase();
 	//iphone
-	/*
 	if(agent.indexOf('iphone') > -1){
 		res.redirect('https://itunes.apple.com/us/app/ricepo-chinese-food-delivery/id844835003?mt=8');
 	}
-	*/
 	//android
-	/*
 	else if(agent.indexOf('android') > -1){
-		if(agent.indexOf('micromessenger') > -1){
-			res.render('mobile.html');
-		}
-		else{
-			res.sendfile(__dirname + '/public/Ricepo-release 1.1.1.apk');
-		}
+		//res.sendfile(__dirname + '/public/Ricepo-release 1.1.1.apk');
+		res.redirect('https://play.google.com/store/apps/details?id=com.ricepo.app');
 	}
-	*/
-});
-app.use(function(req, res){
-	res.send('Hello Ricepo');
+	//else
+	else{
+		res.render('index.html');
+	}
 });
 
+//intro page
+app.all('*',function(req,res){
+	res.render('index.html');
+});
 
 //Error handlers
 app.use(express.errorHandler);
