@@ -68,6 +68,11 @@ app.all('/wechat', function(req, res) {
   sms('5855202237');
 });
 
+//android donwload
+app.all('/android',function(req,res){
+  res.download('public/Ricepo-release.apk');
+});
+
 //intro page
 app.all('*',function(req,res){
 	res.render('index.html');
