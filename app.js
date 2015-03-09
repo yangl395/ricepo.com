@@ -35,6 +35,16 @@ app.use(function(req, res, next){
 	}
 });
 
+//terms
+app.all('/terms', function(req, res){
+	res.render('terms.html');
+});
+//privacy
+app.all('/privacy', function(req, res){
+	res.render('privacy.html');
+});
+
+
 //mobile download
 app.all('/d', function(req, res){
 	var agent = req.header('User-Agent').toLowerCase();
