@@ -85,7 +85,7 @@ app.all('/android',function(req,res){
 
 //intro page
 app.all('*',function(req,res){
-	res.render('index.html');
+	res.render('ricepo.html');
 });
 
 //Error handlers

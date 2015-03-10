@@ -1,0 +1,20 @@
+{
+  "name": "ricepo.com",
+  "version": "0.0.0",
+  "homepage": "https://github.com/yangl395/ricepo.com",
+  "authors": [
+    "Hao Chen <areigna@gmail.com>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "fullpage.js": "~2.6.0"
+  }
+}
