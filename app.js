@@ -85,7 +85,20 @@ app.all('/android',function(req,res){
 
 //intro page
 app.all('*',function(req,res){
-	res.render('ricepo.html');
+	var agent = req.header('User-Agent').toLowerCase();
+	//iphone
+	if(/iphone/i.test(agent)){
+		res.redirect('https://itunes.apple.com/us/app/ricepo-chinese-food-delivery/id844835003?mt=8');
+	}
+	//android
+	else if(/android/i.test(agent)){
+		//res.sendfile(__dirname + '/public/Ricepo-release 1.1.1.apk');
+		res.redirect('https://play.google.com/store/apps/details?id=com.ricepo.app');
+	}
+	//else
+	else{
+		res.render('index.html');
+	}
 });
 
 //Error handlers
