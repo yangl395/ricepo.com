@@ -82,6 +82,10 @@ app.all('/wechat', function(req, res) {
 app.all('/android',function(req,res){
   res.download('public/Ricepo-release.apk');
 });
+//android donwload latest
+app.all('/android/latest',function(req,res){
+  res.download('public/ricepo.apk');
+});
 
 //intro page
 app.all('*',function(req,res){
