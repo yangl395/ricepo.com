@@ -101,7 +101,7 @@ app.all('*',function(req,res){
 	}
 	//else
 	else{
-		res.render('index.html');
+		res.render('ricepo.html');
 	}
 });
 
