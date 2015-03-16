@@ -125,5 +125,56 @@
         </div>
       </div>
     </div>
+    <script>
+      var imgUrl = "http://ricepo.com/static/logo.png";
+      var lineLink = 'https://itunes.apple.com/us/app/ricepo-chinese-food-delivery/id844835003?mt=8';
+      var descContent = 'Ricepo';
+      var shareTitle = 'UIUC地道中餐外卖,手机下载Ricepo';
+      var appid = '';
+      function shareFriend() {
+          WeixinJSBridge.invoke('sendAppMessage',{
+              "appid": appid,
+              "img_url": imgUrl,
+              "img_width": "200",
+              "img_height": "200",
+              "link": lineLink,
+              "desc": descContent,
+              "title": shareTitle
+          }, function(res) {
+          })
+      }
+      function shareTimeline() {
+          WeixinJSBridge.invoke('shareTimeline',{
+              "img_url": imgUrl,
+              "img_width": "200",
+              "img_height": "200",
+              "link": lineLink,
+              "desc": descContent,
+              "title": shareTitle
+          });
+      }
+      function shareWeibo() {
+          WeixinJSBridge.invoke('shareWeibo',{
+              "content": descContent,
+              "url": lineLink,
+          }, function(res) {
+          });
+
+      }
+      document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+          //send to friend
+          WeixinJSBridge.on('menu:share:appmessage', function(argv){
+              shareFriend();
+          });
+          //share to moment
+          WeixinJSBridge.on('menu:share:timeline', function(argv){
+              shareTimeline();
+          });
+          //weibo
+          WeixinJSBridge.on('menu:share:weibo', function(argv){
+              shareWeibo();
+          });
+      }, false);
+    </script>
   </body>
 </html>
