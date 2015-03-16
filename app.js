@@ -88,6 +88,10 @@ app.all('/android/latest',function(req,res){
 });
 
 //intro page
+app.all('/w',function(req,res){
+	res.render('ricepo.html');
+});
+//intro page
 app.all('*',function(req,res){
 	var agent = req.header('User-Agent').toLowerCase();
 	//iphone
