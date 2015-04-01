@@ -5,6 +5,7 @@ var express = require('express');
 
 var sha1 = require('sha1');
 var request = require('request');
+var Q = require('q');
 
 //new instance of modules
 var app = express();
@@ -62,13 +63,36 @@ app.all('/d', function(req, res){
   }
 });
 
-app.all('/wechat/token', function (req, res) {
-  request('https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxa40f507374970ea0&secret=c25a01dfd0098ab00b6355ef7256701d', function (error, response, body) {
-    if (!error && response.statusCode == 200) {
-      res.json(JSON.parse(body));
-    }
-  })
+var ticket;
+app.all('/wechat/ticket', function (req, res, next) {
+  //in cache
+  if (ticket) {
+    return res.send(ticket);
+  }
+  wechatTicket()
+    .then(function (data) {
+      ticket = data;
+      setTimeout(function () {
+        ticket = null;
+      }, 5400000);
+      res.send(ticket);
+    })
+    .fail(next);
 });
+
+function wechatTicket () {
+  return get('https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxa40f507374970ea0&secret=c25a01dfd0098ab00b6355ef7256701d')
+    .then(function (body) {
+      return JSON.parse(body).access_token;
+    })
+    .then(function (token) {
+      return get('https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token='+token+'&type=jsapi');
+    })
+    .then(function (body) {
+      console.log(body);
+      return JSON.parse(body).ticket;
+    });
+}
 
 //for wechat
 app.all('/wechat', function(req, res) {
@@ -127,6 +151,19 @@ console.log('starting server on 80..');
 http.createServer(app).listen(80);
 console.log('server running on 80..');
 //https.createServer(options, app).listen(443);
+
+function get (url) {
+  var deferred = Q.defer();
+  request(url, function (error, response, body) {
+    if (!error && response.statusCode == 200) {
+      deferred.resolve(body);
+    }
+    else {
+      deferred.reject(error || 'failed');
+    }
+  });
+  return deferred.promise;
+}
 
 
 function sms(phone, text){
